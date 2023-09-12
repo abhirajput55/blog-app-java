@@ -3,12 +3,16 @@ package com.blogapp.controllers;
 import static com.blogapp.constants.ApiURI.*;
 import static com.blogapp.constants.ApiConstants.*;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blogapp.constants.AppConstants;
 import com.blogapp.dto.PostDto;
+import com.blogapp.services.FileService;
 import com.blogapp.services.PostService;
 import com.blogapp.utils.ResourceUtil;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,10 +38,16 @@ import jakarta.validation.Valid;
 public class PostController {
 	
 	@Autowired
-	PostService postService;
+	private PostService postService;
 	
 	@Autowired
-	ResourceUtil resourceUtil;
+	private ResourceUtil resourceUtil;
+	
+	@Autowired
+	private FileService fileService;
+	
+	@Value("${project.image}")
+	String path;
 	
 	@PostMapping(CREATE_POST)
 	public ResponseEntity<Map<String, Object>> createNewPost(@Valid @RequestBody PostDto postDto, 
@@ -147,6 +160,46 @@ public class PostController {
 			map.put(SUCCESS, true);
 			map.put(MESSAGE, RECORD_FOUND);
 			map.put(DATA, postService.searchPostsByKeyword(keyword));
+		} catch (Exception e) {
+			map.put(SUCCESS, false);
+			map.put(MESSAGE, ERROR_WHILE_FETCHING_DATA);
+		}
+		return ResponseEntity.ok(map);
+	}
+	
+	@PostMapping("/image/{postId}")
+	public ResponseEntity<Map<String, Object>> uploadImageForPost(
+			@RequestParam MultipartFile image,
+			@PathVariable Integer postId){
+		Map<String, Object> map = new HashMap<>();
+		PostDto postDto = postService.getPostById(postId);
+		try {
+			String uploadedImage = fileService.uploadImage(path, image);
+			postDto.setPostImage(uploadedImage);
+			PostDto updatePost = postService.updatePost(postDto, postId);
+			
+			map.put(SUCCESS, true);
+			map.put(MESSAGE, IMAGE_UPLOADED);
+			map.put(DATA, updatePost);
+		} catch (Exception e) {
+			map.put(SUCCESS, false);
+			map.put(MESSAGE, ERROR_WHILE_FETCHING_DATA);
+		}
+		return ResponseEntity.ok(map);
+	}
+	
+	@GetMapping(value = "image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<Map<String, Object>> getPostImage(
+			@PathVariable String imageName, 
+			HttpServletResponse response){
+		Map<String, Object> map = new HashMap<>();
+		try {
+			
+			InputStream inputStream = fileService.getResource(path, imageName);
+			response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+			StreamUtils.copy(inputStream, response.getOutputStream());
+			map.put(SUCCESS, true);
+			map.put(MESSAGE, RECORD_FOUND);
 		} catch (Exception e) {
 			map.put(SUCCESS, false);
 			map.put(MESSAGE, ERROR_WHILE_FETCHING_DATA);

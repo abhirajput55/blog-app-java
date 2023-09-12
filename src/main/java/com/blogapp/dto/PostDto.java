@@ -1,6 +1,8 @@
 package com.blogapp.dto;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -30,5 +32,7 @@ public class PostDto {
 	private CategoryDto categoryDto;
 	
 	private UserDto userDto;
+	
+	private Set<CommentDto> commentDtos = new HashSet<>(); 
 
 }

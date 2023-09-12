@@ -34,4 +34,11 @@ public class ApiURI {
 	public static final String PAGINATION = "/pagination";
 	public static final String SEARCH_POST = "/search/{keyword}";
 	
+	
+//	Comment Api's 
+	public static final String COMMENT = "/comment";
+	public static final String CREATE_COMMENT = "/user/{userId}/post/{postId}";
+	public static final String DELETE_COMMENT = "/{commentId}";
+	
+	
 }

@@ -32,5 +32,6 @@ public class ApiConstants {
 	public static final String RECORD_ALREDAY_EXIST = "Record already exist for given ID.";
 	public static final String RECORD_NOT_FOUND = "Record Not found";
 	public static final String RECORD_EXIST = "Record already exist for given pseudo name";
+	public static final String IMAGE_UPLOADED = "Image Uploaded Successfully";
 	
 }
