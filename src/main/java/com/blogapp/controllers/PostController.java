@@ -30,8 +30,8 @@ import com.blogapp.services.FileService;
 import com.blogapp.services.PostService;
 import com.blogapp.utils.ResourceUtil;
 
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(BASE_URL + POST)

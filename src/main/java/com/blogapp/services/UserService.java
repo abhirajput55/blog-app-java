@@ -9,8 +9,7 @@ import com.blogapp.dto.UserDto;
 @Service
 public interface UserService {
 	
-	
-	UserDto createUser(UserDto userDto);
+	UserDto registerNewUser(UserDto userDto);
 	
 	UserDto updateUser(Integer userId, UserDto userDto);
 	

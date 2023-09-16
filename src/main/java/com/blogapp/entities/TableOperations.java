@@ -1,6 +1,6 @@
 package com.blogapp.entities;
 
-import jakarta.persistence.Column;
+import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

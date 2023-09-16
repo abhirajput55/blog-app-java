@@ -9,8 +9,8 @@ import static com.blogapp.constants.ApiConstants.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ import com.blogapp.dto.UserDto;
 import com.blogapp.exceptions.ApiResponse;
 import com.blogapp.services.UserService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(BASE_URL + USER)
@@ -38,7 +38,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> createNewUser(@Valid @RequestBody UserDto userDto){
 		Map<String, Object> map = new HashMap<>();
 		
-		UserDto createUser = userService.createUser(userDto);
+		UserDto createUser = userService.registerNewUser(userDto);
 		if(Objects.nonNull(createUser)) {
 			map.put(SUCCESS, true);
 			map.put(MESSAGE, RECORD_ADDED);
@@ -87,6 +87,9 @@ public class UserController {
 		return ResponseEntity.ok(map);
 	}
 	
+//	This Api is only accessible for Admin role that in our database
+//	if we use @PreAuthorize("hasRole('Admin')") then we have to add 'ROLE_ + Admin' in our database
+	@PreAuthorize("hasAuthority('Admin')")
 	@DeleteMapping(DELETE_USER)
 	public ResponseEntity<ApiResponse> deleteUserById(@PathVariable Integer userId){
 		

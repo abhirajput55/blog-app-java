@@ -1,17 +1,19 @@
 package com.blogapp.utils;
 
-import java.util.Date;
-
 import static com.blogapp.constants.AppConstants.CATEGORY;
-import static com.blogapp.constants.AppConstants.USER;
-import static com.blogapp.constants.AppConstants.POST;
 import static com.blogapp.constants.AppConstants.ID;
+import static com.blogapp.constants.AppConstants.USER;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.blogapp.dto.CategoryDto;
+import com.blogapp.dto.CommentDto;
 import com.blogapp.dto.PostDto;
 import com.blogapp.dto.UserDto;
 import com.blogapp.entities.Category;
@@ -62,11 +64,15 @@ public class ResourceUtil {
 		try {
 			CategoryDto categoryDto = modelMapper.map(post.getCategory(), CategoryDto.class);
 			UserDto userDto = modelMapper.map(post.getUser(), UserDto.class);
-			
+			Set<CommentDto> commentDtos = new HashSet<>();
+			post.getComments().forEach(e -> {
+				commentDtos.add(modelMapper.map(e, CommentDto.class));
+			});
 			postDto = modelMapper.map(post, PostDto.class);
 			
 			postDto.setCategoryDto(categoryDto);
-			postDto.setUserDto(userDto);			
+			postDto.setUserDto(userDto);
+			postDto.setCommentDtos(commentDtos);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

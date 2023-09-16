@@ -4,6 +4,11 @@ public class ApiURI {
 	
 	public static final String BASE_URL = "/api/v1";
 	
+//	Authentication Api's
+	public static final String AUTH = "/auth";
+	public static final String LOGIN = "/login";
+	public static final String TOKEN_PARSE = "/tokenParse";
+	
 //	User Api's
 	public static final String USER = "/user";
 	public static final String CREATE_USER = "/";

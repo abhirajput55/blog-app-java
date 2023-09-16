@@ -12,7 +12,6 @@ public class ApiConstants {
 	public static final String DATA = "data";
 	public static final String EXCEPTION = "exception";
 	public static final String RECORD = "record";
-	public static final String TOKEN = "token";
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String STATUS = "Status";
 	
