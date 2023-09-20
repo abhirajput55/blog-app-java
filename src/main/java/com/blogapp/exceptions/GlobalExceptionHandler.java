@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler({ResourceNotFoundException.class})
-	public ResponseEntity<ApiResponse> handleResourceNotFoundException(ResourceNotFoundException ex){
+	public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException ex){
 		
-		ApiResponse apiResponse = new ApiResponse(false, ex.getMessage());
+		ApiError apiError = new ApiError(false, ex.getMessage());
 		
-		return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler({MethodArgumentNotValidException.class})
@@ -36,11 +36,11 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler({ApiException.class})
-	public ResponseEntity<ApiResponse> handleApiException(ApiException ex){
+	public ResponseEntity<ApiError> handleApiException(ApiException ex){
 		
-		ApiResponse apiResponse = new ApiResponse(true, ex.getMessage());
+		ApiError apiError = new ApiError(true, ex.getMessage());
 		
-		return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
 	}
 
 }

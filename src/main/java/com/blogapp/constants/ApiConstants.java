@@ -14,6 +14,7 @@ public class ApiConstants {
 	public static final String RECORD = "record";
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String STATUS = "Status";
+	public static final String TOKEN = "token";
 	
 	
 //	REST API Response Messages

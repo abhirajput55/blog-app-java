@@ -1,5 +1,6 @@
 package com.blogapp.controllers;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blogapp.dto.UserDto;
-import com.blogapp.exceptions.ApiResponse;
+import com.blogapp.enums.ApiResponse;
+import com.blogapp.exceptions.ApiError;
 import com.blogapp.services.UserService;
 
 import javax.validation.Valid;
@@ -91,10 +93,9 @@ public class UserController {
 //	if we use @PreAuthorize("hasRole('Admin')") then we have to add 'ROLE_ + Admin' in our database
 	@PreAuthorize("hasAuthority('Admin')")
 	@DeleteMapping(DELETE_USER)
-	public ResponseEntity<ApiResponse> deleteUserById(@PathVariable Integer userId){
-		
+	public ResponseEntity<ApiError> deleteUserById(@PathVariable Integer userId){
 		userService.deleteUser(userId);
-		return new ResponseEntity<>(new ApiResponse(true, RECORD_DELETED), HttpStatus.OK);
+		return new ResponseEntity<>(new ApiError(true, RECORD_DELETED), HttpStatus.OK);
 	}
 	
 

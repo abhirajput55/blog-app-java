@@ -1,18 +1,17 @@
-package com.blogapp.exceptions;
+package com.blogapp.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.blogapp.constants.ApiConstants;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class ApiResponse {
+public enum ApiResponse {
 	
-	private boolean success;
-	
-	private String message;
+	DATA(ApiConstants.DATA),MESSAGE(ApiConstants.MESSAGE),
+    TOKEN(ApiConstants.TOKEN),SUCCESS(ApiConstants.SUCCESS);
+
+    String data;
+    
+    ApiResponse(String data2) {
+    	
+        this.data=data2;
+    }
 	
 }
